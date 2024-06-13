@@ -1,4 +1,4 @@
-# React + Vite
+# 리액트 심화 개인과제입니다.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
