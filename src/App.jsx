@@ -86,7 +86,10 @@ function App() {
               path="detail/:id"
               element={<Detail expenses={expenses} setExpenses={setExpenses} />}
             />
-            <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/profile"
+              element={<Profile user={user} setUser={setUser} />}
+            />
           </Route>
           <Route path="/sign_in" element={<SignIn setUser={setUser} />} />
           <Route path="/sign_up" element={<SignUp />} />

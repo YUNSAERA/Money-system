@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { updateProfile } from "../lib/api/auth";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   max-width: 400px;
@@ -33,13 +35,35 @@ const Button = styled.button`
   margin-bottom: 10px;
 `;
 
-export default function Profile() {
+export default function Profile({ user, setUser }) {
   const [nickname, setNickname] = useState("");
   const [avatar, setAvatar] = useState(null);
 
-  const handleUpdateProfile = () => {
-    console.log(nickname);
-    console.log(avatar);
+  const navigate = useNavigate();
+
+  const handleUpdateProfile = async () => {
+    const formData = new FormData();
+    formData.append("nickname", nickname);
+    formData.append("avatar", avatar);
+    console.log(nickname, avatar);
+    try {
+      const response = await updateProfile(formData);
+      console.log("응답 데이터:", response); // 로그로 응답 내용 확인
+
+      if (response && response.success) {
+        // response가 유효하면 그 안의 success를 검사
+        setUser({
+          ...user,
+          nickname: response.nickname,
+          avatar: response.avatar,
+        });
+        navigate("/");
+      } else {
+        console.error("프로필 업데이트 실패: 응답 없음");
+      }
+    } catch (error) {
+      console.error("프로필 업데이트 실패:", error);
+    }
   };
 
   return (
@@ -60,10 +84,14 @@ export default function Profile() {
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => setNickname(e.target.filse[0])}
+          onChange={(e) => {
+            if (e.target.files && e.target.files[0]) {
+              setAvatar(e.target.files[0]);
+            }
+          }}
         />
       </InputGroup>
-      <Button oncclick={handleUpdateProfile}>프로필 업데이트</Button>
+      <Button onClick={handleUpdateProfile}>프로필 업데이트</Button>
     </Container>
   );
 }

@@ -60,19 +60,14 @@ export default function SignIn({ setUser }) {
 
   // 로그인 버튼 클릭 이벤트 핸들러
   const handleSignIn = async () => {
-    try {
-      const { userId, nickname, avatar } = await login({ id, password });
-      console.log("로그인 성공", { userId, nickname, avatar });
-      alert("로그인이 되었습니다 :)");
-      setUser({ userId, nickname, avatar });
-      console.log("네비게이션 실행");
-      navigate("/");
-    } catch (error) {
-      console.error("로그인 실패:", error);
-      alert("로그인에 실패했습니다. 다시 시도해 주세요.");
-    }
+    const { userId, nickname, avatar } = await login({
+      id: id,
+      password: password,
+    });
+    alert("로그인이 되었습니다 :)");
+    setUser({ userId, nickname, avatar });
+    navigate("/");
   };
-
   // JSX 렌더링
   return (
     <Container>
