@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const JSON_SERVER_HOST = "http://localhost:5000/";
+const JSON_SERVER_HOST = "http://localhost:5000";
 
 export const getExpenses = async () => {
   try {

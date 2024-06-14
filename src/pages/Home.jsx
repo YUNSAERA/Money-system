@@ -26,7 +26,6 @@ export default function Home({ expenses, setExpenses }) {
   const filteredExpenses = expenses.filter(
     (expense) => expense.month === month
   );
-  console.log("he");
 
   return (
     <Container>
