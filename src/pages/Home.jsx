@@ -3,6 +3,7 @@ import { useState } from "react";
 import MonthNavigation from "../components/MonthNavigation";
 import ExpenseList from "../components/ExpenseList";
 import CreateExpense from "../components/CreateExpense";
+import { useQuery } from "@tanstack/react-query";
 
 const Container = styled.main`
   max-width: 800px;
@@ -25,6 +26,7 @@ export default function Home({ expenses, setExpenses }) {
   const filteredExpenses = expenses.filter(
     (expense) => expense.month === month
   );
+  console.log("he");
 
   return (
     <Container>
