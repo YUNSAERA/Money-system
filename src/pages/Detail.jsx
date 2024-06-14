@@ -63,6 +63,12 @@ export default function Detail({ expenses, setExpenses }) {
 
   const selectedExpense = expenses.find((element) => element.id === id);
 
+  if (!selectedExpense) {
+    alert("해당 지출 내역을 찾을 수 없습니다.");
+    navigate(-1); // 뒤로 가기
+    return null;
+  }
+
   const [date, setDate] = useState(selectedExpense.date);
   const [item, setItem] = useState(selectedExpense.item);
   const [amount, setAmount] = useState(selectedExpense.amount);
