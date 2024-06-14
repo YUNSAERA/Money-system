@@ -1,7 +1,7 @@
 import { useState } from "react"; // React의 useState 훅을 임포트합니다.
 import { useNavigate } from "react-router-dom"; // 페이지 네비게이션을 위해 useNavigate 훅을 임포트합니다.
 import styled from "styled-components"; // styled-components 라이브러리를 임포트합니다.
-import {register} from "../lib/api/auth"
+import { register } from "../lib/api/auth";
 
 // Container 스타일 컴포넌트를 정의합니다. 이 컴포넌트는 로그인 폼을 감싸는 컨테이너 역할을 합니다.
 const Container = styled.div`
@@ -60,7 +60,6 @@ export default function SignUp() {
   const navigate = useNavigate(); // 네비게이션 함수를 초기화합니다.
 
   const handleRegister = async () => {
-
     if (id.length < 4 || id.length > 10 || !/\d/.test(id)) {
       alert(
         "아이디는 4글자에서 10글자 이내로만 가능하며, 숫자를 포함해야 합니다!"
@@ -87,12 +86,15 @@ export default function SignUp() {
     // API 호출하는 부분
 
     const response = await register({
-        id: id,
-        password: password,
-        nickname: nickname,});
-        console.log("회원가입 API 응답값 : ", response);
+      id: id,
+      password: password,
+      nickname: nickname,
+    });
+    if (response) {
+        confirm("회원가입이 완료되었습니다.")
+        navigate("/sign_in");
+    }
   };
-
 
   return (
     <Container>

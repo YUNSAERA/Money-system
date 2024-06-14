@@ -1,6 +1,7 @@
 import { useState } from "react"; // React의 useState 훅을 임포트합니다.
 import { useNavigate } from "react-router-dom"; // 페이지 네비게이션을 위해 useNavigate 훅을 임포트합니다.
 import styled from "styled-components"; // styled-components 라이브러리를 임포트합니다.
+import { login } from "../lib/api/auth";
 
 // Container 스타일 컴포넌트를 정의합니다. 이 컴포넌트는 로그인 폼을 감싸는 컨테이너 역할을 합니다.
 const Container = styled.div`
@@ -52,16 +53,24 @@ const ToggleButton = styled.button`
 `;
 
 // SignIn 함수형 컴포넌트를 정의합니다.
-export default function SignIn() {
-    const [id, setId] = useState(""); // 사용자 아이디를 위한 상태를 관리합니다.
-    const [password, setPassword] = useState(""); // 사용자 비밀번호를 위한 상태를 관리합니다.
-    const navigate = useNavigate(); // 네비게이션 함수를 초기화합니다.
-
+export default function SignIn({ setUser }) {
+  const [id, setId] = useState(""); // 사용자 아이디를 위한 상태를 관리합니다.
+  const [password, setPassword] = useState(""); // 사용자 비밀번호를 위한 상태를 관리합니다.
+  const navigate = useNavigate(); // 네비게이션 함수를 초기화합니다.
 
   // 로그인 버튼 클릭 이벤트 핸들러
-  const handleSignIn = () => {
-    console.log("id", id);
-    console.log("password:", password);
+  const handleSignIn = async () => {
+    try {
+      const { userId, nickname, avatar } = await login({ id, password });
+      console.log("로그인 성공", { userId, nickname, avatar });
+      alert("로그인이 되었습니다 :)");
+      setUser({ userId, nickname, avatar });
+      console.log("네비게이션 실행");
+      navigate("/");
+    } catch (error) {
+      console.error("로그인 실패:", error);
+      alert("로그인에 실패했습니다. 다시 시도해 주세요.");
+    }
   };
 
   // JSX 렌더링
@@ -83,7 +92,7 @@ export default function SignIn() {
           placeholder="비밀번호를 입력하세요"
         />
       </InputGroup>
-      <Button onClick={handleSignIn} >로그인</Button>
+      <Button onClick={handleSignIn}>로그인</Button>
       <ToggleButton onClick={() => navigate("/sign_up")}>회원가입</ToggleButton>
     </Container>
   );
