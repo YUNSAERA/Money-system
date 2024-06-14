@@ -91,8 +91,8 @@ export default function SignUp() {
       nickname: nickname,
     });
     if (response) {
-        confirm("회원가입이 완료되었습니다.")
-        navigate("/sign_in");
+      confirm("회원가입이 완료되었습니다.");
+      navigate("/sign_in");
     }
   };
 
