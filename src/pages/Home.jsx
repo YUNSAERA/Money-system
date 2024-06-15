@@ -3,6 +3,7 @@ import { useState } from "react";
 import MonthNavigation from "../components/MonthNavigation";
 import ExpenseList from "../components/ExpenseList";
 import CreateExpense from "../components/CreateExpense";
+import { useQuery } from "@tanstack/react-query";
 
 const Container = styled.main`
   max-width: 800px;
@@ -19,22 +20,14 @@ export const Section = styled.section`
   padding: 20px;
 `;
 
-export default function Home({ expenses, setExpenses }) {
+export default function Home({ user }) {
   const [month, setMonth] = useState(1);
-
-  const filteredExpenses = expenses.filter(
-    (expense) => expense.month === month
-  );
 
   return (
     <Container>
       <MonthNavigation month={month} setMonth={setMonth} />
-      <CreateExpense
-        month={month}
-        expenses={expenses}
-        setExpenses={setExpenses}
-      />
-      <ExpenseList expenses={filteredExpenses} />
+      <CreateExpense user={user} month={month} />
+      <ExpenseList />
     </Container>
   );
 }

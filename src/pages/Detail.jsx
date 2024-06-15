@@ -1,6 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getExpense } from "../lib/api/expense";
 
 const Container = styled.div`
   max-width: 800px;
@@ -57,17 +59,40 @@ const BackButton = styled(Button)`
   }
 `;
 
-export default function Detail({ expenses, setExpenses }) {
+export default function Detail() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const selectedExpense = expenses.find((element) => element.id === id);
+  // useQuery를 사용하여 서버로부터 지출 데이터를 불러옵니다.
+  const {
+    data: selectedExpense,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["expense", id],
+    queryFn: () => getExpense(id),
+  });
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error occurred: {error.message}</div>;
 
-  const [date, setDate] = useState(selectedExpense.date);
-  const [item, setItem] = useState(selectedExpense.item);
-  const [amount, setAmount] = useState(selectedExpense.amount);
-  const [description, setDescription] = useState(selectedExpense.description);
+  // 여기서 훅을 호출하면 안 됩니다. 모든 훅은 함수 최상단에 위치해야 합니다.
+  if (!selectedExpense) {
+    alert("해당 지출 내역을 찾을 수 없습니다.");
+    navigate(-1);
+    return null;
+  }
 
+  // useState를 조건과 상관없이 상단에서 호출
+  const [date, setDate] = useState(selectedExpense ? selectedExpense.date : "");
+  const [item, setItem] = useState(selectedExpense ? selectedExpense.item : "");
+  const [amount, setAmount] = useState(
+    selectedExpense ? selectedExpense.amount : 0
+  );
+  const [description, setDescription] = useState(
+    selectedExpense ? selectedExpense.description : ""
+  );
+
+  // 수정 함수
   const editExpense = () => {
     const datePattern = /^\d{4}-\d{2}-\d{2}$/;
     if (!datePattern.test(date)) {
@@ -96,6 +121,7 @@ export default function Detail({ expenses, setExpenses }) {
     navigate("/");
   };
 
+  //삭제 로직
   const deleteExpense = () => {
     const newExpenses = expenses.filter((expense) => expense.id !== id);
     setExpenses(newExpenses);
