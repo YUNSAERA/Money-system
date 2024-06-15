@@ -78,6 +78,15 @@
       "amount": 11,
       "description": "11",
       "createdBy": "asas1"
+    },
+    {
+      "id": "66be2dfd-b134-4c1d-958e-3a5843f5f5a1",
+      "month": 1,
+      "date": "2024-01-01",
+      "item": "11",
+      "amount": 22,
+      "description": "11",
+      "createdBy": "asas1"
     }
   ]
 }

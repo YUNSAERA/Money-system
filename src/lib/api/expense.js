@@ -11,6 +11,15 @@ export const getExpenses = async () => {
     alert("뭔가 잘못된거 같아요! 데이터를 로드 할 수가 없어요");
   }
 };
+export const getExpense = async ({ queryKey }) => {
+  try {
+    const response = await axios.get(`${JSON_SERVER_HOST}/expenses`);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    alert("뭔가 잘못된 것 같아요! 데이터를 불러 올 수가 없어요");
+  }
+};
 
 export const postExpense = async (newExpense) => {
   try {
